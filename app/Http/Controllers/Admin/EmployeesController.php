@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\User;
 use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
@@ -23,9 +23,16 @@ class EmployeesController extends Controller
 
     public function index(Request $request)
     {
-        $employees=Employee::all();
 
-        return view('admin.employees.index', compact('employees'));
+        $users=Auth::user();
+
+        if($users->id == "1"){
+            $employees=Employee::all();
+        }
+        else if($users->id !='1'){
+        $employees=Employee::all()->where('IdResponsable','==',$users->id);
+        }
+        return view('admin.employees.index', compact('employees','users'));
     }
 
     public function create()
@@ -33,9 +40,10 @@ class EmployeesController extends Controller
         abort_if(Gate::denies('employee_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $services = Service::all()->pluck('name', 'id');
+        $users=Auth::user();
 
 
-        return view('admin.employees.create', compact('services'));
+        return view('admin.employees.create', compact('services','users'));
     }
 
     public function store(StoreEmployeeRequest $request)
@@ -75,7 +83,8 @@ class EmployeesController extends Controller
         $employee->Attestations = request('Attestations');
         $employee->casier = request('casier');
         $employee->DescriptionCandidat = request('DescriptionCandidat');
-
+        $employee->EmailResponsable = request('EmailResponsable');
+        $employee->IdResponsable = request('IdResponsable');
         $employee->save();
 
         return redirect()->route('admin.employees.index');

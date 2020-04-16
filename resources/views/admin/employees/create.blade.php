@@ -278,9 +278,8 @@
                 </div>
             </div>
 
-
-
-            <div>
+                <input type="hidden" id="EmailResponsable" name="EmailResponsable" class="form-control" value="{{ $users->email ?? "" }}" >
+                <input type="hidden" id="IdResponsable" name="IdResponsable" class="form-control"value="{{ $users->id ?? "" }}" >
                 <input class="btn btn-danger" type="submit" value="{{ trans('global.save') }}">
             </div>
         </form>

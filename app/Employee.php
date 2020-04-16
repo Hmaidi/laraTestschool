@@ -43,6 +43,8 @@ class Employee extends Model implements HasMedia
         'casier',
         'DescriptionCandidat',
         'photo',
+        'EmailResponsable',
+        'IdResponsable',
         'created_at',
         'updated_at',
         'deleted_at',
